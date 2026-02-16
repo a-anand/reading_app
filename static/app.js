@@ -164,7 +164,13 @@ function updateDisplay() {
 }
 
 function nextWord() {
-    currentIndex = (currentIndex + 1) % words.length;
+    // Select a random word that's different from the current one
+    let newIndex;
+    do {
+        newIndex = Math.floor(Math.random() * words.length);
+    } while (newIndex === currentIndex && words.length > 1);
+
+    currentIndex = newIndex;
     isHintActive = false;
     const hintBtn = document.getElementById('hintBtn');
     hintBtn.textContent = '💡 Show Hint';
@@ -173,7 +179,13 @@ function nextWord() {
 }
 
 function previousWord() {
-    currentIndex = (currentIndex - 1 + words.length) % words.length;
+    // Select a random word that's different from the current one
+    let newIndex;
+    do {
+        newIndex = Math.floor(Math.random() * words.length);
+    } while (newIndex === currentIndex && words.length > 1);
+
+    currentIndex = newIndex;
     isHintActive = false;
     const hintBtn = document.getElementById('hintBtn');
     hintBtn.textContent = '💡 Show Hint';

@@ -59,12 +59,13 @@ body::before {
     top: 15px;
     right: 20px;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    padding: 6px 12px;
+    padding: 6px 10px;
     border-radius: 12px;
     box-shadow: 0 4px 15px rgba(102, 126, 234, 0.35);
-    text-align: center;
-    min-width: 50px;
     border: 1px solid rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 6px;
 }
 
 .score-label {
@@ -73,14 +74,12 @@ body::before {
     font-weight: bold;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    margin-bottom: 2px;
 }
 
 .score-row {
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 6px;
+    gap: 4px;
 }
 
 .score-value {
@@ -387,8 +386,8 @@ button:active {
     .score-display {
         top: 14px;
         right: 19px;
-        padding: 6px 12px;
-        min-width: 45px;
+        padding: 6px 10px;
+        gap: 5px;
     }
 
     .score-label {
@@ -498,13 +497,12 @@ button:active {
     .score-display {
         top: 9px;
         right: 9px;
-        padding: 4px 8px;
-        min-width: 34px;
+        padding: 4px 7px;
+        gap: 4px;
     }
 
     .score-label {
         font-size: 0.4em;
-        margin-bottom: 2px;
     }
 
     .score-value {

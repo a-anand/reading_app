@@ -101,6 +101,7 @@ const words = [
 
 let currentIndex = 0;
 let score = 0;
+let isHintActive = false;
 
 // Load score from localStorage
 function loadScore() {
@@ -164,11 +165,19 @@ function updateDisplay() {
 
 function nextWord() {
     currentIndex = (currentIndex + 1) % words.length;
+    isHintActive = false;
+    const hintBtn = document.getElementById('hintBtn');
+    hintBtn.textContent = '💡 Show Hint';
+    hintBtn.classList.remove('active');
     updateDisplay();
 }
 
 function previousWord() {
     currentIndex = (currentIndex - 1 + words.length) % words.length;
+    isHintActive = false;
+    const hintBtn = document.getElementById('hintBtn');
+    hintBtn.textContent = '💡 Show Hint';
+    hintBtn.classList.remove('active');
     updateDisplay();
 }
 
@@ -191,6 +200,79 @@ function speakWord() {
     } else {
         alert('Sorry, your browser does not support text-to-speech!');
     }
+}
+
+function toggleHint() {
+    isHintActive = !isHintActive;
+    const hintBtn = document.getElementById('hintBtn');
+
+    if (isHintActive) {
+        hintBtn.textContent = '✨ Hide Hint';
+        hintBtn.classList.add('active');
+        applyHintColoring();
+    } else {
+        hintBtn.textContent = '💡 Show Hint';
+        hintBtn.classList.remove('active');
+        updateDisplay();
+    }
+}
+
+function applyHintColoring() {
+    if (words.length === 0) return;
+
+    const wordElement = document.getElementById('word');
+    const currentWord = words[currentIndex].word;
+    const pronunciation = words[currentIndex].pronunciation;
+
+    // Parse pronunciation into syllables (split by hyphen)
+    const syllables = pronunciation.split('-');
+
+    // Colors for different syllables
+    const colors = [
+        'rgba(255, 107, 129, 0.3)', // pink
+        'rgba(126, 213, 111, 0.3)', // green
+        'rgba(119, 158, 203, 0.3)', // blue
+        'rgba(255, 193, 7, 0.3)',   // yellow
+        'rgba(156, 39, 176, 0.3)',  // purple
+        'rgba(255, 152, 0, 0.3)'    // orange
+    ];
+
+    // Try to map syllables to word parts
+    const wordLower = currentWord.toLowerCase();
+    let coloredHTML = '';
+    let currentPos = 0;
+
+    syllables.forEach((syllable, index) => {
+        const cleanSyllable = syllable.replace(/[^a-z]/gi, '').toLowerCase();
+
+        // Try to find approximate match in remaining word
+        let syllableLength = Math.ceil(wordLower.length / syllables.length);
+
+        // Better matching: look for common patterns
+        if (cleanSyllable.length > 0) {
+            // Try to match based on first letter
+            const firstLetter = cleanSyllable[0];
+            const remainingWord = wordLower.substring(currentPos);
+            const matchPos = remainingWord.indexOf(firstLetter);
+
+            if (matchPos >= 0 && matchPos < 3) {
+                syllableLength = Math.max(matchPos + Math.ceil(cleanSyllable.length * 0.8), 1);
+            }
+        }
+
+        const endPos = Math.min(currentPos + syllableLength, currentWord.length);
+        const wordPart = currentWord.substring(currentPos, endPos);
+
+        coloredHTML += `<span class="syllable-group" style="background-color: ${colors[index % colors.length]}">${wordPart}</span>`;
+        currentPos = endPos;
+    });
+
+    // Add any remaining letters
+    if (currentPos < currentWord.length) {
+        coloredHTML += currentWord.substring(currentPos);
+    }
+
+    wordElement.innerHTML = coloredHTML;
 }
 
 // Keyboard navigation
@@ -374,23 +456,22 @@ function checkSentence(transcript) {
     if (!spokenWords.includes(currentWord)) {
         feedback.className = 'feedback error';
         feedback.innerHTML = `Oops! Try to use the word "<strong>${currentWord}</strong>" in your sentence. 💪`;
+        // Speak faillure feedback
+        if ('speechSynthesis' in window) {
+            // Cancel any ongoing speech
+            window.speechSynthesis.cancel();
+
+            const utterance = new SpeechSynthesisUtterance(`Oops! Try to use the word "${currentWord}" in your sentence.`);
+            utterance.rate = 1.0; // Slightly slower for clarity
+            utterance.pitch = 1.2; // Kid-friendly tone
+            utterance.volume = 1.0; // Full volume
+
+            window.speechSynthesis.speak(utterance);
+    }
         return;
     }
 
-    // Check if it's actually a proper sentence (at least 3 words)
-    if (spokenWords.length < 3) {
-        feedback.className = 'feedback error';
-        feedback.innerHTML = `That's not a complete sentence! Try to make a longer sentence with "<strong>${currentWord}</strong>". 📝`;
-        return;
-    }
-
-    // Check if the sentence is just the word repeated
-    const uniqueWords = new Set(spokenWords);
-    if (uniqueWords.size === 1) {
-        feedback.className = 'feedback error';
-        feedback.innerHTML = `Try making a real sentence, not just repeating "<strong>${currentWord}</strong>"! 😊`;
-        return;
-    }
+   
 
     // Success! Valid sentence with the word
     feedback.className = 'feedback success';
@@ -421,7 +502,7 @@ function checkSentence(transcript) {
         feedback.className = 'feedback empty';
         document.getElementById('transcript').textContent = '';
     }, 3000);
-}
+121}
 
 // Clear feedback when changing words
 function updateDisplay() {

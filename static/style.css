@@ -375,107 +375,110 @@ button:active {
 /* iPad and Tablet Optimization */
 @media (min-width: 768px) and (max-width: 1024px) {
     .container {
-        max-width: 90%;
-        padding: 38px 30px;
+        max-width: 680px;
+        padding: 24px 32px 20px;
     }
 
     .score-display {
-        top: 14px;
-        right: 19px;
-        padding: 5px 10px;
-        gap: 5px;
+        top: 18px;
+        right: 24px;
+        padding: 4px 12px;
+        gap: 7px;
     }
 
     .score-label {
-        font-size: 0.53em;
+        font-size: 1em;
     }
 
     .score-value {
-        font-size: 1.1em;
+        font-size: 1em;
     }
 
     h1 {
-        font-size: 2.25em;
-        margin-bottom: 22px;
+        font-size: 1.6em;
+        margin-bottom: 14px;
     }
 
     .word {
-        font-size: 4.5em;
+        font-size: 3.2em;
     }
 
     .pronunciation {
-        font-size: 1.9em;
+        font-size: 1.1em;
     }
 
     .word-display {
-        padding: 60px 38px;
-        margin: 22px 0;
+        padding: 28px 32px;
+        margin: 14px 0;
     }
 
     button {
-        font-size: 1.35em;
-        padding: 19px 38px;
-        min-width: 150px;
+        font-size: 1em;
+        padding: 12px 28px;
+        min-width: 130px;
         touch-action: manipulation;
     }
 
-    .speak-btn {
-        font-size: 1.65em;
-        padding: 22px 45px;
+    .speak-btn, .hint-btn {
+        font-size: 1.1em;
+        padding: 14px 30px;
     }
 
     .record-btn {
-        font-size: 1.5em;
-        padding: 19px 38px;
+        font-size: 1em;
+        padding: 12px 28px;
     }
 
     .practice-section {
-        padding: 30px;
-        margin: 30px 0;
+        padding: 16px;
+        margin: 14px 0;
     }
 
     .practice-section h2 {
-        font-size: 1.65em;
+        font-size: 1.1em;
+        margin-bottom: 6px;
     }
 
     .practice-section p {
-        font-size: 1.2em;
+        font-size: 0.85em;
+        margin-bottom: 10px;
     }
 
     .feedback {
-        font-size: 1.35em;
-        padding: 19px;
-        min-height: 60px;
+        font-size: 0.95em;
+        padding: 12px;
+        min-height: 34px;
     }
 
     .transcript {
-        font-size: 1.1em;
-        padding: 15px;
+        font-size: 0.85em;
+        padding: 10px;
+        min-height: 30px;
     }
 
     .counter {
-        font-size: 1.35em;
-        margin-top: 22px;
+        font-size: 0.95em;
+        margin-top: 12px;
     }
 
     .controls {
-        gap: 22px;
-        margin-top: 26px;
+        gap: 10px;
+        margin-top: 12px;
     }
 }
 
 /* iPad Pro and larger tablets */
 @media (min-width: 1024px) {
     .container {
-        max-width: 675px;
+        max-width: 700px;
     }
 
     .word {
-        font-size: 5.25em;
+        font-size: 3.4em;
     }
 
     .pronunciation {
-        font-size: 2.25em;
+        font-size: 1.15em;
     }
 }
 

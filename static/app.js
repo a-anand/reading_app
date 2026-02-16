@@ -1,4 +1,104 @@
-let words = [];
+// Word list with pronunciations
+const words = [
+    {"word": "apple", "pronunciation": "AP-ul"},
+    {"word": "book", "pronunciation": "BOOK"},
+    {"word": "chair", "pronunciation": "CHAIR"},
+    {"word": "door", "pronunciation": "DOR"},
+    {"word": "elephant", "pronunciation": "EL-uh-funt"},
+    {"word": "flower", "pronunciation": "FLOW-ur"},
+    {"word": "grape", "pronunciation": "GRAYP"},
+    {"word": "house", "pronunciation": "HOWZ"},
+    {"word": "igloo", "pronunciation": "IG-loo"},
+    {"word": "jump", "pronunciation": "JUMP"},
+    {"word": "kite", "pronunciation": "KYTE"},
+    {"word": "lamp", "pronunciation": "LAMP"},
+    {"word": "moon", "pronunciation": "MOON"},
+    {"word": "nest", "pronunciation": "NEST"},
+    {"word": "orange", "pronunciation": "OR-inj"},
+    {"word": "pencil", "pronunciation": "PEN-sul"},
+    {"word": "queen", "pronunciation": "KWEEN"},
+    {"word": "rainbow", "pronunciation": "RAYN-boh"},
+    {"word": "sunshine", "pronunciation": "SUN-shyne"},
+    {"word": "tree", "pronunciation": "TREE"},
+    {"word": "umbrella", "pronunciation": "um-BREL-uh"},
+    {"word": "violin", "pronunciation": "vye-uh-LIN"},
+    {"word": "window", "pronunciation": "WIN-doh"},
+    {"word": "xylophone", "pronunciation": "ZYE-luh-fohn"},
+    {"word": "yellow", "pronunciation": "YEL-oh"},
+    {"word": "zebra", "pronunciation": "ZEE-bruh"},
+    {"word": "ball", "pronunciation": "BAWL"},
+    {"word": "cloud", "pronunciation": "KLOWD"},
+    {"word": "dragon", "pronunciation": "DRAG-un"},
+    {"word": "earth", "pronunciation": "URTH"},
+    {"word": "friend", "pronunciation": "FREND"},
+    {"word": "garden", "pronunciation": "GAR-dun"},
+    {"word": "happy", "pronunciation": "HAP-ee"},
+    {"word": "island", "pronunciation": "EYE-lund"},
+    {"word": "jungle", "pronunciation": "JUN-gul"},
+    {"word": "kitten", "pronunciation": "KIT-un"},
+    {"word": "letter", "pronunciation": "LET-ur"},
+    {"word": "monkey", "pronunciation": "MUN-kee"},
+    {"word": "night", "pronunciation": "NYTE"},
+    {"word": "ocean", "pronunciation": "OH-shun"},
+    {"word": "pizza", "pronunciation": "PEET-suh"},
+    {"word": "quiet", "pronunciation": "KWY-et"},
+    {"word": "rabbit", "pronunciation": "RAB-it"},
+    {"word": "school", "pronunciation": "SKOOL"},
+    {"word": "turtle", "pronunciation": "TUR-tul"},
+    {"word": "unicorn", "pronunciation": "YOO-nih-korn"},
+    {"word": "village", "pronunciation": "VIL-ij"},
+    {"word": "water", "pronunciation": "WAW-tur"},
+    {"word": "yogurt", "pronunciation": "YOH-gurt"},
+    {"word": "basket", "pronunciation": "BAS-kit"},
+    {"word": "cookie", "pronunciation": "KOOK-ee"},
+    {"word": "desert", "pronunciation": "DEZ-urt"},
+    {"word": "engine", "pronunciation": "EN-jin"},
+    {"word": "forest", "pronunciation": "FOR-ist"},
+    {"word": "giraffe", "pronunciation": "juh-RAF"},
+    {"word": "hammer", "pronunciation": "HAM-ur"},
+    {"word": "jacket", "pronunciation": "JAK-it"},
+    {"word": "kitchen", "pronunciation": "KICH-un"},
+    {"word": "lizard", "pronunciation": "LIZ-urd"},
+    {"word": "market", "pronunciation": "MAR-kit"},
+    {"word": "napkin", "pronunciation": "NAP-kin"},
+    {"word": "ostrich", "pronunciation": "OS-trich"},
+    {"word": "parrot", "pronunciation": "PAIR-ut"},
+    {"word": "rocket", "pronunciation": "ROK-it"},
+    {"word": "sandwich", "pronunciation": "SAND-wich"},
+    {"word": "teacher", "pronunciation": "TEECH-ur"},
+    {"word": "vacuum", "pronunciation": "VAK-yoom"},
+    {"word": "wizard", "pronunciation": "WIZ-urd"},
+    {"word": "zipper", "pronunciation": "ZIP-ur"},
+    {"word": "blanket", "pronunciation": "BLANK-it"},
+    {"word": "castle", "pronunciation": "KAS-ul"},
+    {"word": "dinosaur", "pronunciation": "DYE-nuh-sor"},
+    {"word": "eagle", "pronunciation": "EE-gul"},
+    {"word": "festival", "pronunciation": "FES-tih-vul"},
+    {"word": "guitar", "pronunciation": "gih-TAR"},
+    {"word": "helicopter", "pronunciation": "HEL-ih-kop-tur"},
+    {"word": "imagine", "pronunciation": "ih-MAJ-in"},
+    {"word": "jelly", "pronunciation": "JEL-ee"},
+    {"word": "kangaroo", "pronunciation": "kang-guh-ROO"},
+    {"word": "lemon", "pronunciation": "LEM-un"},
+    {"word": "mountain", "pronunciation": "MOWN-tin"},
+    {"word": "nature", "pronunciation": "NAY-chur"},
+    {"word": "octopus", "pronunciation": "OK-tuh-pus"},
+    {"word": "penguin", "pronunciation": "PENG-gwin"},
+    {"word": "question", "pronunciation": "KWES-chun"},
+    {"word": "river", "pronunciation": "RIV-ur"},
+    {"word": "spider", "pronunciation": "SPY-dur"},
+    {"word": "thunder", "pronunciation": "THUN-dur"},
+    {"word": "unicycle", "pronunciation": "YOO-nih-sy-kul"},
+    {"word": "volcano", "pronunciation": "vol-KAY-noh"},
+    {"word": "walrus", "pronunciation": "WAL-rus"},
+    {"word": "button", "pronunciation": "BUT-un"},
+    {"word": "candle", "pronunciation": "KAN-dul"},
+    {"word": "dolphin", "pronunciation": "DOL-fin"},
+    {"word": "explore", "pronunciation": "ek-SPLOR"},
+    {"word": "finger", "pronunciation": "FING-gur"},
+    {"word": "giggle", "pronunciation": "GIG-ul"}
+];
+
 let currentIndex = 0;
 let score = 0;
 
@@ -45,16 +145,9 @@ function resetScore() {
     }
 }
 
-// Fetch words from the server
-async function loadWords() {
-    try {
-        const response = await fetch('/api/words');
-        words = await response.json();
-        updateDisplay();
-    } catch (error) {
-        console.error('Error loading words:', error);
-        document.getElementById('word').textContent = 'Error loading words';
-    }
+// Initialize display on load
+function initializeApp() {
+    updateDisplay();
 }
 
 function updateDisplay() {
@@ -331,8 +424,8 @@ function updateDisplay() {
     document.getElementById('transcript').textContent = '';
 }
 
-// Load words and score when page loads
+// Load score and initialize app when page loads
 window.addEventListener('load', function() {
     loadScore();
-    loadWords();
+    initializeApp();
 });

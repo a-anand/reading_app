@@ -2,149 +2,45 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Reading Practice">
+    <link rel="manifest" href="static/manifest.json">
     <title>Reading Practice App</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-
-        .container {
-            background: white;
-            border-radius: 30px;
-            padding: 60px 40px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            max-width: 800px;
-            width: 100%;
-            text-align: center;
-        }
-
-        h1 {
-            color: #667eea;
-            font-size: 2.5em;
-            margin-bottom: 40px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .word-display {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            padding: 60px 40px;
-            border-radius: 20px;
-            margin: 40px 0;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-        }
-
-        .word {
-            font-size: 5em;
-            font-weight: bold;
-            color: white;
-            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
-            margin-bottom: 20px;
-        }
-
-        .pronunciation {
-            font-size: 2em;
-            color: #fff9c4;
-            font-style: italic;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-        }
-
-        .controls {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
-            margin-top: 30px;
-        }
-
-        button {
-            font-size: 1.5em;
-            padding: 20px 40px;
-            border: none;
-            border-radius: 15px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        button:active {
-            transform: translateY(0);
-        }
-
-        .prev-btn {
-            background: #4facfe;
-            color: white;
-        }
-
-        .next-btn {
-            background: #43e97b;
-            color: white;
-        }
-
-        .speak-btn {
-            background: #fa709a;
-            color: white;
-            font-size: 2em;
-            padding: 25px 50px;
-        }
-
-        .counter {
-            font-size: 1.5em;
-            color: #666;
-            margin-top: 20px;
-        }
-
-        @media (max-width: 600px) {
-            .word {
-                font-size: 3em;
-            }
-
-            .pronunciation {
-                font-size: 1.5em;
-            }
-
-            button {
-                font-size: 1.2em;
-                padding: 15px 30px;
-            }
-
-            h1 {
-                font-size: 2em;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="static/style.css">
 </head>
 <body>
     <div class="container">
+        <div class="score-display">
+            <div class="score-label">Score</div>
+            <div class="score-row">
+                <div class="score-value" id="score">0</div>
+                <button class="reset-score-btn" onclick="resetScore()" title="Reset Score">🔄</button>
+            </div>
+        </div>
+
         <h1>Reading Practice</h1>
 
         <div class="word-display">
-            <div class="word" id="word">apple</div>
-            <div class="pronunciation" id="pronunciation">AP-ul</div>
+            <div class="word" id="word">Loading...</div>
+            <div class="pronunciation" id="pronunciation">...</div>
         </div>
 
         <div class="controls">
             <button class="speak-btn" id="speakBtn" onclick="speakWord()">
                 🔊 Read Aloud
             </button>
+        </div>
+
+        <div class="practice-section">
+            <h2>Practice Time!</h2>
+            <p>Can you use this word in a sentence?</p>
+            <button class="record-btn" id="recordBtn" onclick="startRecording()">
+                🎤 Record Your Sentence
+            </button>
+            <div class="feedback" id="feedback"></div>
+            <div class="transcript" id="transcript"></div>
         </div>
 
         <div class="controls">
@@ -156,167 +52,9 @@
             </button>
         </div>
 
-        <div class="counter" id="counter">Word 1 of 100</div>
+        <div class="counter" id="counter">Loading...</div>
     </div>
 
-    <script>
-        const words = [
-            { word: "apple", pronunciation: "AP-ul" },
-            { word: "book", pronunciation: "BOOK" },
-            { word: "chair", pronunciation: "CHAIR" },
-            { word: "door", pronunciation: "DOR" },
-            { word: "elephant", pronunciation: "EL-uh-funt" },
-            { word: "flower", pronunciation: "FLOW-ur" },
-            { word: "grape", pronunciation: "GRAYP" },
-            { word: "house", pronunciation: "HOWZ" },
-            { word: "igloo", pronunciation: "IG-loo" },
-            { word: "jump", pronunciation: "JUMP" },
-            { word: "kite", pronunciation: "KYTE" },
-            { word: "lamp", pronunciation: "LAMP" },
-            { word: "moon", pronunciation: "MOON" },
-            { word: "nest", pronunciation: "NEST" },
-            { word: "orange", pronunciation: "OR-inj" },
-            { word: "pencil", pronunciation: "PEN-sul" },
-            { word: "queen", pronunciation: "KWEEN" },
-            { word: "rainbow", pronunciation: "RAYN-boh" },
-            { word: "sunshine", pronunciation: "SUN-shyne" },
-            { word: "tree", pronunciation: "TREE" },
-            { word: "umbrella", pronunciation: "um-BREL-uh" },
-            { word: "violin", pronunciation: "vye-uh-LIN" },
-            { word: "window", pronunciation: "WIN-doh" },
-            { word: "xylophone", pronunciation: "ZYE-luh-fohn" },
-            { word: "yellow", pronunciation: "YEL-oh" },
-            { word: "zebra", pronunciation: "ZEE-bruh" },
-            { word: "ball", pronunciation: "BAWL" },
-            { word: "cloud", pronunciation: "KLOWD" },
-            { word: "dragon", pronunciation: "DRAG-un" },
-            { word: "earth", pronunciation: "URTH" },
-            { word: "friend", pronunciation: "FREND" },
-            { word: "garden", pronunciation: "GAR-dun" },
-            { word: "happy", pronunciation: "HAP-ee" },
-            { word: "island", pronunciation: "EYE-lund" },
-            { word: "jungle", pronunciation: "JUN-gul" },
-            { word: "kitten", pronunciation: "KIT-un" },
-            { word: "letter", pronunciation: "LET-ur" },
-            { word: "monkey", pronunciation: "MUN-kee" },
-            { word: "night", pronunciation: "NYTE" },
-            { word: "ocean", pronunciation: "OH-shun" },
-            { word: "pizza", pronunciation: "PEET-suh" },
-            { word: "quiet", pronunciation: "KWY-et" },
-            { word: "rabbit", pronunciation: "RAB-it" },
-            { word: "school", pronunciation: "SKOOL" },
-            { word: "turtle", pronunciation: "TUR-tul" },
-            { word: "unicorn", pronunciation: "YOO-nih-korn" },
-            { word: "village", pronunciation: "VIL-ij" },
-            { word: "water", pronunciation: "WAW-tur" },
-            { word: "yogurt", pronunciation: "YOH-gurt" },
-            { word: "basket", pronunciation: "BAS-kit" },
-            { word: "cookie", pronunciation: "KOOK-ee" },
-            { word: "desert", pronunciation: "DEZ-urt" },
-            { word: "engine", pronunciation: "EN-jin" },
-            { word: "forest", pronunciation: "FOR-ist" },
-            { word: "giraffe", pronunciation: "juh-RAF" },
-            { word: "hammer", pronunciation: "HAM-ur" },
-            { word: "island", pronunciation: "EYE-lund" },
-            { word: "jacket", pronunciation: "JAK-it" },
-            { word: "kitchen", pronunciation: "KICH-un" },
-            { word: "lizard", pronunciation: "LIZ-urd" },
-            { word: "market", pronunciation: "MAR-kit" },
-            { word: "napkin", pronunciation: "NAP-kin" },
-            { word: "ostrich", pronunciation: "OS-trich" },
-            { word: "parrot", pronunciation: "PAIR-ut" },
-            { word: "rocket", pronunciation: "ROK-it" },
-            { word: "sandwich", pronunciation: "SAND-wich" },
-            { word: "teacher", pronunciation: "TEECH-ur" },
-            { word: "vacuum", pronunciation: "VAK-yoom" },
-            { word: "wizard", pronunciation: "WIZ-urd" },
-            { word: "zipper", pronunciation: "ZIP-ur" },
-            { word: "blanket", pronunciation: "BLANK-it" },
-            { word: "castle", pronunciation: "KAS-ul" },
-            { word: "dinosaur", pronunciation: "DYE-nuh-sor" },
-            { word: "eagle", pronunciation: "EE-gul" },
-            { word: "festival", pronunciation: "FES-tih-vul" },
-            { word: "guitar", pronunciation: "gih-TAR" },
-            { word: "helicopter", pronunciation: "HEL-ih-kop-tur" },
-            { word: "imagine", pronunciation: "ih-MAJ-in" },
-            { word: "jelly", pronunciation: "JEL-ee" },
-            { word: "kangaroo", pronunciation: "kang-guh-ROO" },
-            { word: "lemon", pronunciation: "LEM-un" },
-            { word: "mountain", pronunciation: "MOWN-tin" },
-            { word: "nature", pronunciation: "NAY-chur" },
-            { word: "octopus", pronunciation: "OK-tuh-pus" },
-            { word: "penguin", pronunciation: "PENG-gwin" },
-            { word: "question", pronunciation: "KWES-chun" },
-            { word: "river", pronunciation: "RIV-ur" },
-            { word: "spider", pronunciation: "SPY-dur" },
-            { word: "thunder", pronunciation: "THUN-dur" },
-            { word: "unicycle", pronunciation: "YOO-nih-sy-kul" },
-            { word: "volcano", pronunciation: "vol-KAY-noh" },
-            { word: "walrus", pronunciation: "WAL-rus" },
-            { word: "yogurt", pronunciation: "YOH-gurt" },
-            { word: "button", pronunciation: "BUT-un" },
-            { word: "candle", pronunciation: "KAN-dul" },
-            { word: "dolphin", pronunciation: "DOL-fin" },
-            { word: "explore", pronunciation: "ek-SPLOR" },
-            { word: "finger", pronunciation: "FING-gur" },
-            { word: "giggle", pronunciation: "GIG-ul" }
-        ];
-
-        let currentIndex = 0;
-
-        function updateDisplay() {
-            const wordElement = document.getElementById('word');
-            const pronunciationElement = document.getElementById('pronunciation');
-            const counterElement = document.getElementById('counter');
-
-            wordElement.textContent = words[currentIndex].word;
-            pronunciationElement.textContent = words[currentIndex].pronunciation;
-            counterElement.textContent = `Word ${currentIndex + 1} of ${words.length}`;
-        }
-
-        function nextWord() {
-            currentIndex = (currentIndex + 1) % words.length;
-            updateDisplay();
-        }
-
-        function previousWord() {
-            currentIndex = (currentIndex - 1 + words.length) % words.length;
-            updateDisplay();
-        }
-
-        function speakWord() {
-            const word = words[currentIndex].word;
-
-            if ('speechSynthesis' in window) {
-                // Cancel any ongoing speech
-                window.speechSynthesis.cancel();
-
-                // Create new speech utterance
-                const utterance = new SpeechSynthesisUtterance(word);
-                utterance.rate = 0.8; // Slower pace for learning
-                utterance.pitch = 1.1; // Slightly higher pitch for child-friendly tone
-                utterance.volume = 1;
-
-                window.speechSynthesis.speak(utterance);
-            } else {
-                alert('Sorry, your browser does not support text-to-speech!');
-            }
-        }
-
-        // Keyboard navigation
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 'ArrowRight') {
-                nextWord();
-            } else if (event.key === 'ArrowLeft') {
-                previousWord();
-            } else if (event.key === ' ') {
-                event.preventDefault();
-                speakWord();
-            }
-        });
-
-        // Initialize display
-        updateDisplay();
-    </script>
+    <script src="static/app.js"></script>
 </body>
 </html>

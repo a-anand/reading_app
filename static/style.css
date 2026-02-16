@@ -59,7 +59,7 @@ body::before {
     top: 15px;
     right: 20px;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    padding: 5px 10px;
+    padding: 3px 10px;
     border-radius: 12px;
     box-shadow: 0 4px 15px rgba(102, 126, 234, 0.35);
     border: 1px solid rgba(255, 255, 255, 0.2);
@@ -70,21 +70,15 @@ body::before {
 
 .score-label {
     color: #fff;
-    font-size: 0.6em;
+    font-size: 0.85em;
     font-weight: bold;
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
 
-.score-row {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-}
-
 .score-value {
     color: #fff;
-    font-size: 1.3em;
+    font-size: 0.85em;
     font-weight: bold;
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
 }
@@ -102,25 +96,6 @@ body::before {
     }
 }
 
-.reset-score-btn {
-    background: rgba(255, 255, 255, 0.3);
-    color: white;
-    font-size: 0.75em;
-    padding: 2px 5px;
-    margin: 0;
-    border-radius: 6px;
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    cursor: pointer;
-    transition: all 0.3s ease;
-    line-height: 1;
-    min-width: auto;
-}
-
-.reset-score-btn:hover {
-    background: rgba(255, 255, 255, 0.5);
-    transform: scale(1.1);
-}
-
 h1 {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     -webkit-background-clip: text;
@@ -133,7 +108,7 @@ h1 {
 }
 
 .word-display {
-    background: white;
+    background: rgb(239, 233, 233);
     padding: 21px 26px;
     border-radius: 16px;
     margin: 10px 0;

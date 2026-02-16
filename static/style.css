@@ -133,13 +133,14 @@ h1 {
 }
 
 .word-display {
-    background: linear-gradient(135deg, #ff6b9d 0%, #c06c84 100%);
+    background: white;
     padding: 21px 26px;
     border-radius: 16px;
     margin: 10px 0;
-    box-shadow: 0 20px 50px rgba(192, 108, 132, 0.4), 0 0 1px rgba(255, 255, 255, 0.3) inset;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15), 0 0 1px rgba(0, 0, 0, 0.1) inset;
     position: relative;
     overflow: hidden;
+    border: 2px solid rgba(102, 126, 234, 0.2);
 }
 
 .word-display::before {
@@ -156,8 +157,8 @@ h1 {
 .word {
     font-size: 2.6em;
     font-weight: 800;
-    color: white;
-    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    color: #2d3748;
+    text-shadow: none;
     margin-bottom: 4px;
     letter-spacing: -1.5px;
     position: relative;
@@ -165,10 +166,10 @@ h1 {
 
 .pronunciation {
     font-size: 0.9em;
-    color: rgba(255, 255, 255, 0.9);
+    color: #718096;
     font-weight: 600;
     font-style: italic;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+    text-shadow: none;
     letter-spacing: 0.75px;
 }
 

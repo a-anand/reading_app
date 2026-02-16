@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Reading Practice">
+    <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+    <title>Reading Practice App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="score-display">
+            <div class="score-label">Score</div>
+            <div class="score-row">
+                <div class="score-value" id="score">0</div>
+                <button class="reset-score-btn" onclick="resetScore()" title="Reset Score">🔄</button>
+            </div>
+        </div>
+
+        <h1>Reading Practice</h1>
+
+        <div class="word-display">
+            <div class="word" id="word">Loading...</div>
+            <div class="pronunciation" id="pronunciation">...</div>
+        </div>
+
+        <div class="controls">
+            <button class="speak-btn" id="speakBtn" onclick="speakWord()">
+                🔊 Read Aloud
+            </button>
+        </div>
+
+        <div class="practice-section">
+            <h2>Practice Time!</h2>
+            <p>Can you use this word in a sentence?</p>
+            <button class="record-btn" id="recordBtn" onclick="startRecording()">
+                🎤 Record Your Sentence
+            </button>
+            <div class="feedback" id="feedback"></div>
+            <div class="transcript" id="transcript"></div>
+        </div>
+
+        <div class="controls">
+            <button class="prev-btn" onclick="previousWord()">
+                ← Previous
+            </button>
+            <button class="next-btn" onclick="nextWord()">
+                Next →
+            </button>
+        </div>
+
+        <div class="counter" id="counter">Loading...</div>
+    </div>
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>

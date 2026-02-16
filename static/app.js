@@ -366,44 +366,61 @@ function createConfetti() {
 
 function checkSentence(transcript) {
     const currentWord = words[currentIndex].word.toLowerCase();
-    const spokenWords = transcript.toLowerCase().split(/\s+/);
+    const spokenWords = transcript.toLowerCase().split(/\s+/).filter(w => w.length > 0);
 
     const feedback = document.getElementById('feedback');
 
     // Check if the word is used in the sentence
-    if (spokenWords.includes(currentWord)) {
-        feedback.className = 'feedback success';
-        feedback.innerHTML = '🎉 Amazing! Great sentence! +1 Point! 🌟';
-
-        // Increment score
-        incrementScore();
-
-        // Launch confetti!
-        createConfetti();
-
-        // Speak congratulations
-        if ('speechSynthesis' in window) {
-            // Cancel any ongoing speech
-            window.speechSynthesis.cancel();
-
-            const utterance = new SpeechSynthesisUtterance('Excellent job! That was a great sentence! You earned a point!');
-            utterance.rate = 0.85; // Slightly slower for clarity
-            utterance.pitch = 1.2; // Kid-friendly tone
-            utterance.volume = 1.0; // Full volume
-
-            window.speechSynthesis.speak(utterance);
-        }
-
-        // Auto advance to next word after 3 seconds
-        setTimeout(() => {
-            nextWord();
-            feedback.className = 'feedback empty';
-            document.getElementById('transcript').textContent = '';
-        }, 3000);
-    } else {
+    if (!spokenWords.includes(currentWord)) {
         feedback.className = 'feedback error';
         feedback.innerHTML = `Oops! Try to use the word "<strong>${currentWord}</strong>" in your sentence. 💪`;
+        return;
     }
+
+    // Check if it's actually a proper sentence (at least 3 words)
+    if (spokenWords.length < 3) {
+        feedback.className = 'feedback error';
+        feedback.innerHTML = `That's not a complete sentence! Try to make a longer sentence with "<strong>${currentWord}</strong>". 📝`;
+        return;
+    }
+
+    // Check if the sentence is just the word repeated
+    const uniqueWords = new Set(spokenWords);
+    if (uniqueWords.size === 1) {
+        feedback.className = 'feedback error';
+        feedback.innerHTML = `Try making a real sentence, not just repeating "<strong>${currentWord}</strong>"! 😊`;
+        return;
+    }
+
+    // Success! Valid sentence with the word
+    feedback.className = 'feedback success';
+    feedback.innerHTML = '🎉 Amazing! Great sentence! +1 Point! 🌟';
+
+    // Increment score
+    incrementScore();
+
+    // Launch confetti!
+    createConfetti();
+
+    // Speak congratulations
+    if ('speechSynthesis' in window) {
+        // Cancel any ongoing speech
+        window.speechSynthesis.cancel();
+
+        const utterance = new SpeechSynthesisUtterance('Excellent job! That was a great sentence! You earned a point!');
+        utterance.rate = 1.0; // Slightly slower for clarity
+        utterance.pitch = 1.2; // Kid-friendly tone
+        utterance.volume = 1.0; // Full volume
+
+        window.speechSynthesis.speak(utterance);
+    }
+
+    // Auto advance to next word after 3 seconds
+    setTimeout(() => {
+        nextWord();
+        feedback.className = 'feedback empty';
+        document.getElementById('transcript').textContent = '';
+    }, 3000);
 }
 
 // Clear feedback when changing words
